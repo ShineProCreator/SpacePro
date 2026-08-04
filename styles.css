@@ -860,6 +860,7 @@ input[type=range]::-webkit-slider-thumb {
     cursor: pointer !important;
 }
 
+/* Mouse control: hide system cursor only while playing (not pause/menus) */
 body.mouse-control.game-active:not(.game-paused) {
     cursor: none !important;
 }
@@ -871,6 +872,8 @@ body.mouse-control.game-paused * {
     cursor: auto !important;
 }
 
+
+/* Buff HUD */
 .buff-pickup-msg {
     position: absolute;
     top: 18%;
@@ -918,6 +921,7 @@ body.mouse-control.game-paused * {
     transition: width 0.1s linear;
 }
 
+/* Settings: keep buttons fixed size, range not a nav-item */
 #menuSettings {
     overflow: visible;
 }
@@ -976,6 +980,7 @@ body.mouse-control.game-paused * {
     cursor: pointer;
 }
 
+/* Records table rows not buttons */
 .lb-row {
     pointer-events: none;
 }
@@ -984,6 +989,7 @@ body.mouse-control.game-paused * {
     border-bottom: 1px solid #222;
 }
 
+/* Achievements */
 .ach-list {
     max-height: 60vh;
     overflow-y: auto;
@@ -1045,6 +1051,9 @@ body.mouse-control.game-paused * {
     text-shadow: 0 0 8px rgba(0,0,0,0.9), 0 0 4px rgba(57,255,20,0.5);
 }
 
+
+
+/* Telegram Mini App */
 body.tg-miniapp {
   overscroll-behavior: none;
   -webkit-user-select: none;
@@ -1052,4 +1061,91 @@ body.tg-miniapp {
 }
 body.tg-miniapp #gameCanvas {
   touch-action: none;
+}
+
+/* Mobile portrait: notifications below HUD, not overlapping bars */
+@media (max-width: 900px) and (orientation: portrait) {
+  .status-area {
+    top: max(12px, env(safe-area-inset-top, 12px));
+    left: 12px;
+    width: min(160px, 42vw);
+  }
+  .stats-panel {
+    top: max(100px, calc(env(safe-area-inset-top, 0px) + 88px));
+    left: 12px;
+    font-size: 0.75rem;
+  }
+  .stats-panel .stat-row { font-size: 12px; }
+  .pause-btn {
+    top: max(12px, env(safe-area-inset-top, 12px));
+    right: 12px;
+  }
+  .buff-pickup-msg {
+    top: auto !important;
+    bottom: max(26%, calc(env(safe-area-inset-bottom, 0px) + 22%));
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.95rem;
+    z-index: 80;
+    max-width: 90vw;
+    text-align: center;
+  }
+  .buff-timers {
+    top: auto !important;
+    bottom: max(20%, calc(env(safe-area-inset-bottom, 0px) + 16%));
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(260px, 86vw);
+    z-index: 79;
+  }
+  .ach-toast {
+    top: auto !important;
+    bottom: max(14%, calc(env(safe-area-inset-bottom, 0px) + 10%));
+    left: 50%;
+    transform: translateX(-50%) translateY(8px);
+    z-index: 90;
+  }
+  .ach-toast.show {
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Landscape mobile: compact HUD, more play space */
+@media (orientation: landscape) and (max-height: 500px) {
+  .status-area {
+    top: 8px;
+    left: 10px;
+    width: 140px;
+  }
+  .hp-bar-frame { height: 12px; }
+  .heat-bar-frame { height: 5px; }
+  .energy-container { height: 7px; }
+  .stats-panel {
+    top: 58px;
+    left: 10px;
+  }
+  .stats-panel .stat-row { font-size: 11px; margin-bottom: 2px; }
+  .pause-btn {
+    top: 8px;
+    right: 10px;
+    width: 36px !important;
+    height: 36px !important;
+  }
+  .buff-pickup-msg {
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
+  }
+  .buff-timers {
+    top: 36px;
+    width: min(220px, 50vw);
+  }
+  .ach-toast {
+    top: 8px;
+    bottom: auto !important;
+  }
+  .controls-container {
+    height: 38% !important;
+  }
 }
