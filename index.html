@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <!-- APK / Cordova / Capacitor friendly -->
+    <meta name="format-detection" content="telephone=no">
+    <title>SpacePro 0.5.37.11</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<canvas id="gameCanvas"></canvas>
+<div id="damageOverlay"></div>
+<div id="heatOverlay"></div>
+<div id="healOverlay"></div>
+<div id="fogOverlay"></div>
+
+<div id="gameUI" class="hidden">
+    <div class="status-area">
+        <div class="hp-bar-frame"><div id="hpFill" class="hp-bar-fill"></div></div>
+        <div class="heat-bar-frame"><div id="heatFill" class="heat-bar-fill"></div></div>
+        <div class="energy-container" id="energyContainer"></div>
+    </div>
+    <button class="pause-btn nav-item" onclick="pauseGame()">||</button>
+    <div class="stats-panel">
+        <div class="stat-row">TIME: <span id="timeDisplay" class="accent">00:00</span></div>
+        <div class="stat-row">DIST: <span id="distDisplay" class="accent">0</span> <span id="distUnit">АЕ</span></div>
+        <div class="stat-row">SPD: <span id="speedDisplay" class="accent">0</span> <span id="speedUnit">АЕ/с</span></div>
+        <div class="stat-row">PTS: <span id="scoreDisplay" class="accent">0</span></div>
+    </div>
+    <div id="debugPanel" class="debug-panel">
+        <div class="debug-row">FPS: <span id="dbgFps">0</span></div>
+        <div class="debug-row">Врагов: <span id="dbgEn">0</span></div>
+        <div class="debug-row">ОбзорX: <span id="dbgRadX">0</span></div>
+        <div class="debug-row">ОбзорY: <span id="dbgRadY">0</span></div>
+        <div class="debug-row">Геймпад: <span id="dbgGp">OFF</span></div>
+        <div class="debug-row" style="color:#ff3333">РЕЖИМ РАЗРАБОТЧИКА</div>
+    </div>
+    <!-- controls hint removed -->
+    <div id="buffPickupMsg" class="buff-pickup-msg"></div>
+    <div id="buffTimers" class="buff-timers"></div>
+    <div class="controls-container">
+        <div id="zoneLeft" class="control-zone"></div>
+        <div id="zoneRight" class="control-zone"></div>
+    </div>
+</div>
+
+<div id="controlNodesHolder" style="display:none;">
+    <div id="elFireBtn" class="fire-btn-area" onpointerdown="startFire(this)" onpointerup="stopFire(this)" onpointerleave="stopFire(this)">
+        <div class="fire-btn-visual"></div>
+    </div>
+    <div id="elJoystickVisual" class="joystick-root">
+        <div class="joystick-base">
+            <div class="joystick-stick" id="stick"></div>
+        </div>
+    </div>
+</div>
+
+<div id="profileWidget" class="profile-widget hidden nav-item" tabindex="0" onclick="openProfileScreen()">
+    <div id="pwAvatar" class="pw-avatar">👤</div>
+    <div id="pwName" class="pw-name">Player</div>
+</div>
+
+<!-- MAIN MENU -->
+<div id="menuMain" class="screen">
+    <button class="nav-item btn-secondary btn-tutorial" onclick="showScreen('menuTutorial')">ОБУЧЕНИЕ</button>
+    <div>
+        <h1 id="titleHeader" onclick="handleTitleClick()" >SpacePro</h1>
+        <span class="beta-tag">v0.5.37.11</span>
+    </div>
+    <button class="nav-item btn-quick" onclick="quickPlay()">ИГРАТЬ</button>
+    <button class="nav-item btn-secondary" onclick="showPlayerRecords()">РЕКОРДЫ</button>
+    <button class="nav-item btn-secondary" onclick="showAchievementsScreen()">ДОСТИЖЕНИЯ</button>
+    <button class="nav-item btn-secondary" onclick="showSettings()">НАСТРОЙКИ</button>
+    <div class="social-buttons-container">
+        <button class="nav-item btn-social" onclick="window.open('https://t.me/spaceprogame', '_blank')">Telegram</button>
+        <button class="nav-item btn-social" onclick="window.open('https://youtube.com/@svyatshine?si=foCTaYZBS_AJ2c8_', '_blank')">YouTube</button>
+    </div>
+    <div style="position:absolute;bottom:20px;font-size:0.8rem;color:#666;font-family:monospace;text-align:center;">
+        <div>v0.5.37.11 | Svyatoslav Shine © 2025-2026</div>
+        <div style="font-size:0.7rem;">t.me/spaceprogame</div>
+    </div>
+</div>
+
+<!-- PROFILE -->
+<div id="menuProfile" class="screen hidden">
+    <h2>ПРОФИЛЬ ПИЛОТА</h2>
+    <div class="avatar-selector" id="avatarSelector"></div>
+    <div class="edit-name-container" style="display:flex;align-items:center;margin-bottom:20px;">
+        <input class="nav-item" id="editNickInput" placeholder="Новый позывной" maxlength="12" style="width:180px;">
+        <button class="nav-item btn-small" onclick="saveNickname()">ОК</button>
+    </div>
+    <div class="profile-stats-grid">
+        <div class="p-stat-box">
+            <div class="p-stat-label" style="font-size:0.6rem;color:#888;">ВРАГОВ УБИТО</div>
+            <div class="p-stat-val" id="stKills">0</div>
+        </div>
+        <div class="p-stat-box">
+            <div class="p-stat-label" style="font-size:0.6rem;color:#888;">ВСЕГО ПРОЙДЕНО</div>
+            <div class="p-stat-val" id="stDist">0.00</div>
+            <div class="p-stat-unit" id="stDistUnit" style="font-size:0.7rem;color:#666;"></div>
+        </div>
+        <div class="p-stat-box">
+            <div class="p-stat-label" style="font-size:0.6rem;color:#888;">ВСЕГО ОЧКОВ</div>
+            <div class="p-stat-val" id="stScore">0</div>
+        </div>
+        <div class="p-stat-box">
+            <div class="p-stat-label" style="font-size:0.6rem;color:#888;">В ИГРЕ</div>
+            <div class="p-stat-val" id="stTime">0ч 0м</div>
+        </div>
+    </div>
+    <button class="nav-item" onclick="showScreen('menuMain')">ЗАКРЫТЬ</button>
+    <div style="margin-top:25px;padding:15px;border-top:1px solid #333;font-size:0.85rem;color:#666;text-align:center;">
+        <div style="font-size:1.1rem;color:#39ff14;margin-bottom:8px;">SpacePro v0.5.37</div>
+        <div>👨‍💻 Svyatoslav Shine © 2025-2026</div>
+    </div>
+</div>
+
+<!-- REPORT (Death) -->
+<div id="menuReport" class="screen hidden">
+    <h2 style="color:#ff3333; font-size:2.5rem; text-shadow:0 0 15px red; margin-bottom:10px;">MISSION FAILED</h2>
+    <div class="report-stats">
+        <div class="report-line" id="rLine1">
+            <span class="report-label">БОЕВЫЕ ОЧКИ</span>
+            <span class="report-val" id="rValPoints">0</span>
+        </div>
+        <div class="report-line" id="rLine2">
+            <span class="report-label">ДИСТАНЦИЯ</span>
+            <span class="report-val" id="rValDist">0</span>
+        </div>
+        <div class="report-line" id="rLine3">
+            <span class="report-label">ВРЕМЯ</span>
+            <span class="report-val" id="rValTime">00:00</span>
+        </div>
+        <div class="report-line" id="rLine4">
+            <span class="report-label">МНОЖИТЕЛЬ</span>
+            <span class="report-val accent" id="rValDiv">÷1.0</span>
+        </div>
+        <div class="report-total-line" id="rLineTotal" style="margin-top:20px;padding-top:15px;border-top:1px solid #444;display:flex;flex-direction:column;align-items:center;opacity:0;">
+            <span class="report-total-label">ИТОГОВЫЙ СЧЕТ</span>
+            <span class="report-total-val" id="rValTotal">0</span>
+        </div>
+        <div id="devFormulaBox" style="font-family:monospace;font-size:0.75rem;color:#ffff00;margin-top:20px;background:rgba(50,50,0,0.8);padding:10px;border:1px dashed #ffff00;border-radius:5px;width:100%;text-align:left;display:none;"></div>
+    </div>
+    <button class="nav-item" onclick="quickPlay()">ПОВТОРИТЬ</button>
+    <button class="nav-item btn-secondary" onclick="exitToMain()">В МЕНЮ</button>
+</div>
+
+<!-- PAUSE -->
+<div id="menuPause" class="screen screen-pause hidden">
+    <h2 style="color:#39ff14">ПАУЗА</h2>
+    <button class="nav-item" onclick="resumeGame()">ПРОДОЛЖИТЬ</button>
+    <button class="nav-item" onclick="showPlayerRecords(true)">РЕКОРДЫ</button>
+    <button class="nav-item" onclick="openSettingsFromPause()">НАСТРОЙКИ</button>
+    <button class="nav-item btn-secondary" onclick="stopGameManual()">ВЫЙТИ В МЕНЮ</button>
+</div>
+
+
+<div id="menuActivation" class="screen hidden">
+    <h2 style="color:#39ff14">BETA ACCESS</h2>
+    <div style="font-size:0.85rem;color:#888;margin:12px 0 16px;max-width:280px;text-align:center;line-height:1.4">
+        Введите 6-значный код доступа.<br>Код действует 20 секунд.
+    </div>
+    <input class="nav-item" id="activationInput" type="text" maxlength="6" placeholder="XXXXXX"
+        style="text-transform:uppercase;letter-spacing:0.2em;text-align:center;font-size:1.2rem"
+        onkeydown="if(event.key==='Enter')submitActivationCode()">
+    <div id="activationErr" style="color:#ff3333;font-size:0.8rem;min-height:1.2em;margin:8px 0"></div>
+    <button class="nav-item" onclick="submitActivationCode()">ВОЙТИ</button>
+</div>
+
+<!-- SETTINGS -->
+<div id="menuSettings" class="screen hidden">
+    <h2>НАСТРОЙКИ</h2>
+    <div id="settingsGrid">
+        <div class="setting-row">
+            <button id="btnSwapControls" class="nav-item" onclick="toggleSwapControls()">СТИК СПРАВА</button>
+        </div>
+        <div class="setting-row">
+            <button id="btnStickStyle" class="nav-item" onclick="toggleStickStyle()">СТИК: ДИНАМИЧНЫЙ</button>
+        </div>
+        <div class="setting-row">
+            <button id="btnUnit" class="nav-item" onclick="toggleUnit()">ИЗМЕРЕНИЕ В АЕ</button>
+        </div>
+        <div class="setting-row">
+            <button id="btnDiff" class="nav-item" onclick="toggleDiff()">НОРМАЛЬНО</button>
+        </div>
+        <div class="setting-row">
+            <button id="btnAim" class="nav-item" onclick="toggleAim()">БЕЗ ПРИЦЕЛА</button>
+        </div>
+        <div class="setting-row setting-row-joy">
+            <div class="joy-size-label">РАЗМЕР СТИКА <span id="joySizeVal">100%</span></div>
+            <input id="joySizeInput" type="range" min="50" max="150" step="10" class="joy-range" oninput="changeJoySize(this.value); saveSettings();">
+        </div>
+        <div class="setting-row">
+            <button id="btnFullscreen" class="nav-item" onclick="toggleFullscreen()">ПОЛНЫЙ ЭКРАН</button>
+        </div>
+    </div>
+    <div id="devContainer" style="font-size:0.9rem;color:#666;font-family:monospace;border-top:1px solid #333;padding-top:10px;margin:12px 0;"></div>
+    
+    <button id="btnSettingsBack" class="nav-item btn-back-small" onclick="backFromSettings()">НАЗАД</button>
+</div>
+
+<!-- DEV AUTH -->
+<div id="menuDevAuth" class="screen hidden">
+    <h2 style="color:#ff3333">ДОСТУП ЗАПРЕЩЕН</h2>
+    <div style="font-size:0.9rem; color:#888; margin-bottom:10px;">ВВЕДИТЕ КОД</div>
+    <input class="nav-item" id="devPass" type="password" placeholder="••••••••" maxlength="10">
+    <button class="nav-item btn-dev" onclick="checkDevAuth()">ВХОД</button>
+    <button class="nav-item btn-secondary" onclick="closeDevAuth()">ОТМЕНА</button>
+</div>
+
+<!-- DEV TOOLS -->
+<div id="menuDevTools" class="screen hidden">
+    <h2 style="color:#ff3333">ПАНЕЛЬ РАЗРАБОТЧИКА</h2>
+    <div class="dev-grid" id="devGrid"></div>
+    <button class="nav-item" onclick="closeDevTools()">ЗАКРЫТЬ</button>
+</div>
+
+<!-- AUTH -->
+<div id="menuAuth" class="screen hidden">
+    <h2>ИДЕНТИФИКАЦИЯ</h2>
+    <input class="nav-item" id="inpLogin" placeholder="Позывной" maxlength="12">
+    <input class="nav-item" id="inpPass" type="password" placeholder="Пароль">
+    <button class="nav-item" onclick="login()">ДОСТУП</button>
+    <button class="nav-item btn-secondary" onclick="register()">НОВЫЙ ПИЛОТ</button>
+    <button class="nav-item btn-secondary" onclick="showScreen('menuMain')">ОТМЕНА</button>
+</div>
+
+<!-- RECORDS (personal) -->
+<div id="menuRecords" class="screen hidden">
+    <h2 id="recTitle">МОИ РЕКОРДЫ</h2>
+    <div class="lb-container">
+        <table class="lb-table">
+            <thead>
+                <tr>
+                    <th style="width:12%">#</th>
+                    <th style="width:22%">PTS</th>
+                    <th style="width:26%">DIST</th>
+                    <th style="width:18%">MOD</th>
+                    <th style="width:22%">TIME</th>
+                </tr>
+            </thead>
+            <tbody id="lbBody"></tbody>
+        </table>
+    </div>
+    <button id="btnRecBack" class="nav-item btn-back-small" onclick="backFromRecords()">НАЗАД</button>
+</div>
+
+<!-- TUTORIAL (first launch) -->
+<div id="menuTutorial" class="screen hidden">
+    <h2 style="color:#39ff14;">ОБУЧЕНИЕ</h2>
+    <div class="tutorial-box">
+        <p><b style="color:#39ff14;">Сенсор (основное):</b></p>
+        <p>• Левая/правая зона — стик (движение). Двойной тап по стику — гипер.</p>
+        <p>• Кнопка огня — стрельба. Удерживай для очереди.</p>
+        <p style="margin-top:10px;"><b style="color:#39ff14;">Геймпад:</b> левый стик — движение, RT/A — огонь, LB — гипер, Start — пауза.</p>
+        <p style="margin-top:10px;"><b style="color:#39ff14;">ПК:</b> WASD — движение, Пробел/ЛКМ — огонь, Shift — гипер.</p>
+        <p style="margin-top:10px;"><b style="color:#39ff14;">Режим «Мышь»:</b> курсор — прицел, ЛКМ — огонь, Пробел — газ, Shift — гипер.</p>
+        <p style="color:#888;font-size:0.85rem;margin-top:12px;">Энергия с убийств. Гипер без энергии недоступен. Подбирай выпадающие баффы.</p>
+    </div>
+    <button class="nav-item btn-quick" onclick="finishTutorial()">ПОНЯТНО, ИГРАТЬ</button>
+</div>
+
+<!-- ACHIEVEMENTS -->
+<div id="menuAchievements" class="screen hidden">
+    <h2 id="achTitle">ДОСТИЖЕНИЯ</h2>
+    <div id="achBody" class="ach-list"></div>
+    <button class="nav-item btn-back-small" onclick="showScreen('menuMain')">НАЗАД</button>
+</div>
+
+<!-- Scripts in correct order -->
+<script src="game.js"></script>
+</body>
+</html>
