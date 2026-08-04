@@ -548,18 +548,19 @@ button.btn-disabled,
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    background: rgba(255, 255, 255, 0.05);
+    border: none;
+    background: transparent;
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: 0.1s;
+    opacity: 0;
+    pointer-events: none;
 }
 
 .fire-active .fire-btn-visual {
-    background: rgba(255, 69, 58, 0.3);
-    border-color: rgba(255, 69, 58, 0.6);
-    transform: scale(0.95);
+    background: transparent;
+    border: none;
+    opacity: 0;
 }
 
 .joystick-root {
@@ -1110,8 +1111,49 @@ body.tg-miniapp #gameCanvas {
   }
 }
 
-/* Landscape mobile: compact HUD, more play space */
-@media (orientation: landscape) and (max-height: 500px) {
+
+
+/* Landscape: slightly smaller UI so menus/buttons fit; game FOV unchanged */
+@media (orientation: landscape) and (max-height: 520px) {
+  .screen h1, .screen h2 {
+    font-size: 1.1rem !important;
+    margin: 6px 0 10px !important;
+  }
+  .nav-item, .screen button.nav-item {
+    padding: 8px 16px !important;
+    font-size: 0.78rem !important;
+    margin: 4px 0 !important;
+    min-height: 0 !important;
+  }
+  .btn-back-small {
+    padding: 6px 14px !important;
+    font-size: 0.72rem !important;
+  }
+  #settingsGrid .nav-item,
+  #settingsGrid button {
+    width: 200px !important;
+    max-width: 70vw !important;
+  }
+  .joy-range { width: 180px !important; max-width: 180px !important; }
+  .profile-stats-grid {
+    width: min(360px, 90vw) !important;
+    gap: 6px !important;
+  }
+  .p-stat-box { padding: 6px !important; }
+  .report-stats {
+    width: min(300px, 90vw) !important;
+    padding: 12px !important;
+    margin: 8px 0 !important;
+  }
+  .report-line { margin: 6px 0 !important; font-size: 0.95rem !important; }
+  .report-total-val { font-size: 1.8rem !important; }
+  .lb-container { max-height: 45vh !important; }
+  .ach-list { max-height: 45vh !important; }
+  .screen {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+  /* compact in-game HUD */
   .status-area {
     top: 8px;
     left: 10px;
@@ -1121,7 +1163,7 @@ body.tg-miniapp #gameCanvas {
   .heat-bar-frame { height: 5px; }
   .energy-container { height: 7px; }
   .stats-panel {
-    top: 58px;
+    top: 56px;
     left: 10px;
   }
   .stats-panel .stat-row { font-size: 11px; margin-bottom: 2px; }
@@ -1131,21 +1173,10 @@ body.tg-miniapp #gameCanvas {
     width: 36px !important;
     height: 36px !important;
   }
-  .buff-pickup-msg {
-    top: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.8rem;
-  }
-  .buff-timers {
-    top: 36px;
-    width: min(220px, 50vw);
-  }
-  .ach-toast {
-    top: 8px;
-    bottom: auto !important;
-  }
   .controls-container {
-    height: 38% !important;
+    height: 42% !important;
   }
+  .buff-pickup-msg { top: 8px; font-size: 0.8rem; }
+  .buff-timers { top: 34px; width: min(220px, 50vw); }
+  .ach-toast { top: 8px; bottom: auto !important; }
 }
