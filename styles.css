@@ -860,7 +860,6 @@ input[type=range]::-webkit-slider-thumb {
     cursor: pointer !important;
 }
 
-/* Mouse control: hide system cursor only while playing (not pause/menus) */
 body.mouse-control.game-active:not(.game-paused) {
     cursor: none !important;
 }
@@ -872,8 +871,6 @@ body.mouse-control.game-paused * {
     cursor: auto !important;
 }
 
-
-/* Buff HUD */
 .buff-pickup-msg {
     position: absolute;
     top: 18%;
@@ -921,7 +918,6 @@ body.mouse-control.game-paused * {
     transition: width 0.1s linear;
 }
 
-/* Settings: keep buttons fixed size, range not a nav-item */
 #menuSettings {
     overflow: visible;
 }
@@ -980,7 +976,6 @@ body.mouse-control.game-paused * {
     cursor: pointer;
 }
 
-/* Records table rows not buttons */
 .lb-row {
     pointer-events: none;
 }
@@ -989,7 +984,6 @@ body.mouse-control.game-paused * {
     border-bottom: 1px solid #222;
 }
 
-/* Achievements */
 .ach-list {
     max-height: 60vh;
     overflow-y: auto;
@@ -1051,3 +1045,11 @@ body.mouse-control.game-paused * {
     text-shadow: 0 0 8px rgba(0,0,0,0.9), 0 0 4px rgba(57,255,20,0.5);
 }
 
+body.tg-miniapp {
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+body.tg-miniapp #gameCanvas {
+  touch-action: none;
+}
