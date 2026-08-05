@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <!-- APK / Cordova / Capacitor friendly -->
     <meta name="format-detection" content="telephone=no">
-    <title>SpacePro 0.5.37.17</title>
+    <title>SpacePro 0.5.37.18</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
@@ -71,7 +71,7 @@
     <button class="nav-item btn-secondary btn-tutorial" onclick="showScreen('menuTutorial')">ОБУЧЕНИЕ</button>
     <div class="title-block">
         <h1 id="titleHeader" onclick="handleTitleClick()">SpacePro</h1>
-        <div class="version-tag">v0.5.37.17</div>
+        <div class="version-tag">v0.5.37.18</div>
     </div>
     <button class="nav-item btn-quick" onclick="quickPlay()">ИГРАТЬ</button>
     <button class="nav-item btn-secondary" onclick="showPlayerRecords()">РЕКОРДЫ</button>
@@ -82,7 +82,7 @@
         <button class="nav-item btn-social" onclick="window.open('https://youtube.com/@svyatshine?si=foCTaYZBS_AJ2c8_', '_blank')">YouTube</button>
     </div>
     <div class="menu-footer">
-        <div>v0.5.37.17 | Svyatoslav Shine © 2025-2026</div>
+        <div>v0.5.37.18 | Svyatoslav Shine © 2025-2026</div>
         <div class="footer-ver">t.me/spaceprogame</div>
     </div>
 </div>
@@ -211,6 +211,10 @@
 
 <div id="menuUiLayout" class="screen hidden">
     <h2>ИНТЕРФЕЙС И УПРАВЛЕНИЕ</h2>
+    <div class="ui-orient-toggle" id="uiOrientToggle">
+        <button type="button" id="btnUiOrientPort" class="nav-item active" onclick="setUiLayoutEditOrient('portrait')">ВЕРТИКАЛЬ</button>
+        <button type="button" id="btnUiOrientLand" class="nav-item" onclick="setUiLayoutEditOrient('landscape')">ГОРИЗОНТ</button>
+    </div>
     <div class="ui-layout-panel">
         <div class="ui-layout-group">
             <div class="ui-layout-title">КНОПКА ПАУЗЫ</div>
