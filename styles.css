@@ -120,6 +120,9 @@ canvas {
     flex-direction: column;
     align-items: center;
     margin-bottom: 12px;
+    position: relative;
+    padding-right: 36px;
+    padding-bottom: 4px;
 }
 h1 {
     color: #39ff14;
@@ -135,13 +138,22 @@ h1 {
     font-family: var(--font-ui);
 }
 .version-tag {
-    margin-top: 4px;
-    font-size: 0.75rem;
-    color: #888;
-    letter-spacing: 0.12em;
+    position: absolute;
+    right: -6px;
+    bottom: 2px;
+    margin-top: 0;
+    font-size: 0.55rem;
+    color: #fff !important;
+    background: #c62828;
+    letter-spacing: 0.06em;
     font-family: var(--font-mono);
     font-style: normal;
-    font-weight: 600;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 3px;
+    line-height: 1.2;
+    box-shadow: 0 0 8px rgba(198,40,40,0.45);
+    z-index: 2;
 }
 
 h2 {
@@ -1169,11 +1181,15 @@ body.tg-miniapp #gameCanvas {
     font-size: clamp(2.1rem, 9vh, 3rem) !important;
     line-height: 1.05 !important;
   }
-  .version-tag, .beta-tag {
-    font-size: 0.42rem !important;
-    margin-top: 2px !important;
-    letter-spacing: 0.18em !important;
-    opacity: 0.65 !important;
+  .version-tag {
+    font-size: 0.48rem !important;
+    color: #fff !important;
+    background: #c62828 !important;
+    opacity: 1 !important;
+    margin-top: 0 !important;
+  }
+  .beta-tag {
+    font-size: 0.5rem !important;
   }
   .nav-item, .screen button.nav-item {
     padding: 10px 18px !important;
@@ -1255,4 +1271,92 @@ body.tg-miniapp #gameCanvas {
     font-size: 0.75rem !important;
     margin: 0 !important;
     z-index: 210;
+}
+
+/* Landscape: keep tutorial/profile compact */
+@media (orientation: landscape) {
+  .btn-tutorial {
+    width: auto !important;
+    max-width: 120px !important;
+    min-width: 0 !important;
+    height: 34px !important;
+    font-size: 0.68rem !important;
+    padding: 0 10px !important;
+    transform: none !important;
+  }
+  .profile-widget {
+    width: auto !important;
+    max-width: 130px !important;
+    min-width: 0 !important;
+    height: auto !important;
+    padding: 2px 8px 2px 2px !important;
+    transform: none !important;
+  }
+  .profile-widget .pw-avatar {
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 14px !important;
+    margin-right: 6px !important;
+  }
+  .profile-widget .pw-name {
+    font-size: 0.72rem !important;
+    max-width: 72px !important;
+  }
+  .title-block {
+    padding-right: 40px;
+  }
+  .title-block h1 {
+    font-size: clamp(2rem, 8.5vh, 2.9rem) !important;
+  }
+  .version-tag {
+    font-size: 0.48rem !important;
+    color: #fff !important;
+    background: #c62828 !important;
+    right: -4px;
+    bottom: 2px;
+  }
+}
+
+.ui-layout-panel {
+  width: min(420px, 94vw);
+  max-height: 70vh;
+  overflow-y: auto;
+  text-align: left;
+  padding: 4px 8px 16px;
+}
+.ui-layout-group {
+  border: 1px solid #2a3344;
+  border-radius: 10px;
+  padding: 12px 12px 8px;
+  margin-bottom: 12px;
+  background: rgba(0,0,0,0.35);
+}
+.ui-layout-title {
+  color: #39ff14;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+.ui-layout-group label {
+  display: block;
+  color: #9aa3b5;
+  font-size: 0.72rem;
+  margin: 6px 0 2px;
+  font-family: var(--font-mono);
+}
+.ui-layout-group .joy-range {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 0 6px !important;
+}
+.ui-layout-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+.ui-layout-actions .nav-item {
+  width: min(280px, 90%) !important;
 }
