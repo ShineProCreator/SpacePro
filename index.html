@@ -7,8 +7,9 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#000000">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <!-- APK / Cordova / Capacitor friendly -->
     <meta name="format-detection" content="telephone=no">
-    <title>SpacePro 0.5.37.16</title>
+    <title>SpacePro 0.5.37.17</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
@@ -70,7 +71,7 @@
     <button class="nav-item btn-secondary btn-tutorial" onclick="showScreen('menuTutorial')">ОБУЧЕНИЕ</button>
     <div class="title-block">
         <h1 id="titleHeader" onclick="handleTitleClick()">SpacePro</h1>
-        <div class="version-tag">v0.5.37.16</div>
+        <div class="version-tag">v0.5.37.17</div>
     </div>
     <button class="nav-item btn-quick" onclick="quickPlay()">ИГРАТЬ</button>
     <button class="nav-item btn-secondary" onclick="showPlayerRecords()">РЕКОРДЫ</button>
@@ -81,12 +82,12 @@
         <button class="nav-item btn-social" onclick="window.open('https://youtube.com/@svyatshine?si=foCTaYZBS_AJ2c8_', '_blank')">YouTube</button>
     </div>
     <div class="menu-footer">
-        <div>v0.5.37.16 | Svyatoslav Shine © 2025-2026</div>
+        <div>v0.5.37.17 | Svyatoslav Shine © 2025-2026</div>
         <div class="footer-ver">t.me/spaceprogame</div>
     </div>
 </div>
 
-
+<!-- PROFILE -->
 <div id="menuProfile" class="screen hidden">
     <h2>ПРОФИЛЬ ПИЛОТА</h2>
     <div class="avatar-selector" id="avatarSelector"></div>
@@ -120,7 +121,7 @@
     </div>
 </div>
 
-
+<!-- REPORT (Death) -->
 <div id="menuReport" class="screen hidden">
     <h2 style="color:#ff3333; font-size:2.5rem; text-shadow:0 0 15px red; margin-bottom:10px;">MISSION FAILED</h2>
     <div class="report-stats">
@@ -150,7 +151,7 @@
     <button class="nav-item btn-secondary" onclick="exitToMain()">В МЕНЮ</button>
 </div>
 
-
+<!-- PAUSE -->
 <div id="menuPause" class="screen screen-pause hidden">
     <h2 style="color:#39ff14">ПАУЗА</h2>
     <button class="nav-item" onclick="resumeGame()">ПРОДОЛЖИТЬ</button>
@@ -172,7 +173,7 @@
     <button class="nav-item" onclick="submitActivationCode()">ВОЙТИ</button>
 </div>
 
-
+<!-- SETTINGS -->
 <div id="menuSettings" class="screen hidden">
     <h2>НАСТРОЙКИ</h2>
     <div id="settingsGrid">
@@ -244,7 +245,7 @@
     </div>
 </div>
 
-
+<!-- DEV AUTH -->
 <div id="menuDevAuth" class="screen hidden">
     <h2 style="color:#ff3333">ДОСТУП ЗАПРЕЩЕН</h2>
     <div style="font-size:0.9rem; color:#888; margin-bottom:10px;">ВВЕДИТЕ КОД</div>
@@ -253,14 +254,14 @@
     <button class="nav-item btn-secondary" onclick="closeDevAuth()">ОТМЕНА</button>
 </div>
 
-
+<!-- DEV TOOLS -->
 <div id="menuDevTools" class="screen hidden">
     <h2 style="color:#ff3333">ПАНЕЛЬ РАЗРАБОТЧИКА</h2>
     <div class="dev-grid" id="devGrid"></div>
     <button class="nav-item" onclick="closeDevTools()">ЗАКРЫТЬ</button>
 </div>
 
-
+<!-- AUTH -->
 <div id="menuAuth" class="screen hidden">
     <h2>ИДЕНТИФИКАЦИЯ</h2>
     <input class="nav-item" id="inpLogin" placeholder="Позывной" maxlength="12">
@@ -270,7 +271,7 @@
     <button class="nav-item btn-secondary" onclick="showScreen('menuMain')">ОТМЕНА</button>
 </div>
 
-
+<!-- RECORDS (personal) -->
 <div id="menuRecords" class="screen hidden">
     <h2 id="recTitle">МОИ РЕКОРДЫ</h2>
     <div class="lb-container">
@@ -290,6 +291,7 @@
     <button id="btnRecBack" class="nav-item btn-back-small" onclick="backFromRecords()">НАЗАД</button>
 </div>
 
+<!-- TUTORIAL (first launch) -->
 <div id="menuTutorial" class="screen hidden">
     <h2 style="color:#39ff14;">ОБУЧЕНИЕ</h2>
     <div class="tutorial-box">
@@ -304,14 +306,14 @@
     <button class="nav-item btn-quick" onclick="finishTutorial()">ПОНЯТНО, ИГРАТЬ</button>
 </div>
 
-
+<!-- ACHIEVEMENTS -->
 <div id="menuAchievements" class="screen hidden">
     <h2 id="achTitle">ДОСТИЖЕНИЯ</h2>
     <div id="achBody" class="ach-list"></div>
     <button class="nav-item btn-back-small" onclick="showScreen('menuMain')">НАЗАД</button>
 </div>
 
-
+<!-- Scripts in correct order -->
 <script src="game.js"></script>
 </body>
 </html>
