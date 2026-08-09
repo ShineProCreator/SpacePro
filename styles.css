@@ -1,5 +1,3 @@
-/* SpacePro v0.5.37 - Clean Styles */
-
 canvas, #stick, .control-region {
     touch-action: none !important;
     user-select: none !important;
@@ -896,8 +894,6 @@ input[type=range]::-webkit-slider-thumb {
     border-radius: 5px !important;
     cursor: pointer !important;
 }
-
-/* Mouse control: hide system cursor only while playing (not pause/menus) */
 body.mouse-control.game-active:not(.game-paused) {
     cursor: none !important;
 }
@@ -908,9 +904,6 @@ body.mouse-control.game-paused,
 body.mouse-control.game-paused * {
     cursor: auto !important;
 }
-
-
-/* Buff HUD */
 .buff-pickup-msg {
     position: absolute;
     top: 18%;
@@ -957,8 +950,6 @@ body.mouse-control.game-paused * {
     border-radius: 3px;
     transition: width 0.1s linear;
 }
-
-/* Settings: keep buttons fixed size, range not a nav-item */
 #menuSettings {
     overflow: visible;
 }
@@ -1016,8 +1007,6 @@ body.mouse-control.game-paused * {
     box-shadow: 0 0 10px #39ff14;
     cursor: pointer;
 }
-
-/* Records table rows not buttons */
 .lb-row {
     pointer-events: none;
 }
@@ -1025,8 +1014,6 @@ body.mouse-control.game-paused * {
     padding: 8px 6px;
     border-bottom: 1px solid #222;
 }
-
-/* Achievements */
 .ach-list {
     max-height: 60vh;
     overflow-y: auto;
@@ -1087,10 +1074,6 @@ body.mouse-control.game-paused * {
     font-family: var(--font-mono);
     text-shadow: 0 0 8px rgba(0,0,0,0.9), 0 0 4px rgba(57,255,20,0.5);
 }
-
-
-
-/* Telegram Mini App */
 body.tg-miniapp {
   overscroll-behavior: none;
   -webkit-user-select: none;
@@ -1099,8 +1082,6 @@ body.tg-miniapp {
 body.tg-miniapp #gameCanvas {
   touch-action: none;
 }
-
-/* Mobile portrait: HUD below TG/status, normal sizes; notifications lower */
 @media (max-width: 900px) and (orientation: portrait) {
   .btn-tutorial {
     top: max(76px, env(safe-area-inset-top, 0px) + 68px) !important;
@@ -1159,10 +1140,6 @@ body.tg-miniapp #gameCanvas {
     transform: translateX(-50%) translateY(0);
   }
 }
-
-
-
-/* Landscape: fit menus; keep in-game HUD at normal size, just lower */
 @media (orientation: landscape) and (max-height: 520px) {
   .screen {
     padding-top: max(20px, env(safe-area-inset-top, 0px) + 20px) !important;
@@ -1217,7 +1194,6 @@ body.tg-miniapp #gameCanvas {
     top: max(48px, env(safe-area-inset-top, 0px) + 40px) !important;
     right: 12px !important;
   }
-  /* in-game landscape: below TG chrome */
   .status-area {
     top: max(52px, env(safe-area-inset-top, 0px) + 44px);
     left: 14px;
@@ -1268,8 +1244,6 @@ body.tg-miniapp #gameCanvas {
     margin: 0 !important;
     z-index: 210;
 }
-
-/* Landscape: same size as portrait, top offset 60px */
 @media (orientation: landscape) {
   .btn-tutorial {
     width: auto !important;
